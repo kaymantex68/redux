@@ -1,25 +1,42 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux'
 
-function App() {
+function App(props) {
+
+  const [inputText, setInputText] = React.useState(null)
+  const textInput = React.useRef(null);
+
+
+  console.info('PROPS: ', props)
+  console.info('STATE: ', props.state.reduser1.items)
+  
+
+  const newItem =()=>{
+    addItem(textInput.current.value);
+
+  }
+  const addItem=props.addItem; 
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <input type="text"  ref={textInput}></input>
+      <button onClick={newItem}>добавить</button>
+    </>
   );
 }
 
-export default App;
+const state = (props)  => ({
+    state: props,
+})
+
+const action = dispatch => ({
+  addItem: (data) => dispatch({
+    type: 'ADD_ITEM',
+    payload: data,
+  })
+})
+
+export default connect(state, action)(App);
